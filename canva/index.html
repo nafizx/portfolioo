@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claim Your Canva Credit — Junayed Nafis</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0b09;
+    --card: #1a1814;
+    --border: #2a2720;
+    --gold: #c9a84c;
+    --gold-dim: #7a6328;
+    --cream: #e8e0cf;
+    --muted: #6b6355;
+    --text: #d4c9b4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+  }
+  .card {
+    max-width: 480px;
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    position: relative;
+  }
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--cream);
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+  h1 em { color: var(--gold); font-style: italic; }
+  p.sub {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 2.2rem;
+  }
+  .btn {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--bg);
+    background: var(--gold);
+    padding: 1rem 2.2rem;
+    border-radius: 3px;
+    border: 1px solid var(--gold);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .btn:hover { background: transparent; color: var(--gold); }
+  .btn:disabled { opacity: 0.6; cursor: default; }
+  .note {
+    margin-top: 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+  .back {
+    display: inline-block;
+    margin-top: 2.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .back:hover { color: var(--cream); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="eyebrow">Canva Pro — Referral</div>
+    <h1>Claim your free <em>Canva</em> credit</h1>
+    <p class="sub">Tap below to redeem the credit via Kamrul's invite link. You'll be redirected to complete the claim.</p>
+    <button class="btn" id="claimBtn">Claim Free Credit</button>
+    <div class="note" id="statusNote">Redirecting to invite.kamrul.us…</div>
+    <br>
+    <a href="/" class="back">← Back to portfolio</a>
+  </div>
+
+  <script>
+    const btn = document.getElementById('claimBtn');
+    const note = document.getElementById('statusNote');
+    note.style.display = 'none';
+    btn.addEventListener('click', () => {
+      btn.disabled = true;
+      btn.textContent = 'Redirecting…';
+      note.style.display = 'block';
+      setTimeout(() => {
+        window.location.href = 'https://invite.kamrul.us';
+      }, 600);
+    });
+  </script>
+</body>
+</html>
