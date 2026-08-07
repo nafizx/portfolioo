@@ -31,7 +31,7 @@
         return;
       }
       list.innerHTML = files
-        .map(f => `<li><a href="${encodeURIComponent(f.name)}">${f.name}</a></li>`)
+        .map(f => `<li><a href="${encodeURIComponent(f.name)}" download="${f.name}">${f.name}</a></li>`)
         .join("");
     })
     .catch(err => {
