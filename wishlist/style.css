@@ -1,0 +1,279 @@
+/* ---------- Tokens ---------- */
+:root {
+  --ink: #1B1F2A;
+  --ink-deep: #12151C;
+  --paper: #EDE6D6;
+  --paper-soft: #F6F2E8;
+  --brass: #B8934D;
+  --brass-bright: #D9B679;
+  --stamp-red: #9C3B2E;
+  --stamp-green: #3F6B4C;
+  --text-dark: #2A2620;
+  --text-dim: #6B6355;
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Newsreader", serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  background-image:
+    radial-gradient(ellipse at top, rgba(184,147,77,0.08), transparent 60%);
+  color: var(--paper-soft);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  padding: 84px 24px 56px;
+  border-bottom: 1px solid rgba(184,147,77,0.25);
+}
+
+.hero-inner {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brass-bright);
+  margin: 0 0 18px;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 1.05;
+  margin: 0 0 14px;
+  color: var(--paper-soft);
+}
+
+.tagline {
+  font-style: italic;
+  font-size: 1.15rem;
+  color: rgba(246,242,232,0.72);
+  margin: 0 0 36px;
+  max-width: 46ch;
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-top: 22px;
+  border-top: 1px dashed rgba(184,147,77,0.35);
+}
+
+.count-line {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--brass-bright);
+  margin: 0;
+}
+
+.coffee-link {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-deep);
+  background: var(--brass-bright);
+  padding: 10px 18px;
+  border-radius: 3px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.coffee-link:hover { background: var(--paper-soft); transform: translateY(-1px); }
+.coffee-cup { font-size: 1rem; }
+
+/* ---------- Grid ---------- */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px 24px 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+}
+
+.empty-state {
+  font-family: var(--font-mono);
+  color: rgba(246,242,232,0.55);
+  text-align: center;
+  padding: 60px 0;
+}
+.empty-state code { color: var(--brass-bright); }
+
+/* ---------- Card ---------- */
+.card {
+  position: relative;
+  background: var(--paper);
+  color: var(--text-dark);
+  padding: 26px 24px 20px;
+  border-radius: 2px;
+  box-shadow:
+    0 1px 0 rgba(0,0,0,0.05),
+    0 18px 30px -20px rgba(0,0,0,0.65);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: rise 0.5s ease forwards;
+}
+
+@keyframes rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card::before {
+  /* torn/perforated top edge */
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, var(--brass) 0 8px, transparent 8px 16px);
+  opacity: 0.55;
+}
+
+.card-number {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--brass);
+  margin: 6px 0 2px;
+}
+
+.card-category {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 0 0 10px;
+}
+
+.card h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  margin: 0 0 10px;
+  padding-right: 70px; /* keep clear of stamp */
+}
+
+.card-note {
+  font-style: italic;
+  font-size: 0.98rem;
+  color: #4a4335;
+  line-height: 1.5;
+  margin: 0 0 20px;
+}
+
+.card-footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-top: 1px dashed rgba(42,38,32,0.25);
+  padding-top: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.card-price {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--text-dark);
+}
+
+.card-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--stamp-green);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+.card-link:hover { color: var(--stamp-red); }
+
+.card-date {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  margin-top: 10px;
+}
+
+/* ---------- Stamp ---------- */
+.stamp {
+  position: absolute;
+  top: 22px;
+  right: -8px;
+  width: 118px;
+  padding: 7px 6px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  transform: rotate(9deg);
+  mix-blend-mode: multiply;
+  opacity: 0.85;
+  filter: url(#stampTexture);
+}
+.stamp::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+}
+.stamp.wishing { color: var(--stamp-red); }
+.stamp.acquired { color: var(--stamp-green); transform: rotate(-7deg); }
+
+/* ---------- Footer ---------- */
+footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 24px 60px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: rgba(246,242,232,0.45);
+}
+footer code { color: var(--brass-bright); }
+
+/* ---------- Motion & a11y ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .card { animation: none; opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}
+
+a:focus-visible, .coffee-link:focus-visible {
+  outline: 2px solid var(--brass-bright);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .hero { padding: 56px 18px 40px; }
+  .card h2 { padding-right: 0; }
+  .stamp { position: static; display: inline-block; margin-bottom: 14px; transform: rotate(-2deg); right: auto; top: auto; }
+}
