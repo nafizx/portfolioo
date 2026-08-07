@@ -17,13 +17,19 @@
   const PATH = "files"; // this folder's path inside the repo
 
   fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}?ref=${BRANCH}`)
-    .then(r => r.json())
-    .then(data => {
-      const skip = ["index.html"];
-      const files = (Array.isArray(data) ? data : [])
-        .filter(f => f.type === "file" && !skip.includes(f.name));
-
+    .then(r => r.json().then(data => ({ ok: r.ok, data })))
+    .then(({ ok, data }) => {
       const list = document.getElementById("list");
+
+      if (!ok || !Array.isArray(data)) {
+        const msg = (data && data.message) ? data.message : "Unknown error";
+        list.textContent = `GitHub API error: ${msg}`;
+        return;
+      }
+
+      const skip = ["index.html"];
+      const files = data.filter(f => f.type === "file" && !skip.includes(f.name));
+
       if (files.length === 0) {
         list.textContent = "No files yet.";
         return;
