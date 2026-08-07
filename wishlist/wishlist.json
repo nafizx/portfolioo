@@ -1,0 +1,37 @@
+{
+  "site": {
+    "title": "Nafis's Wishlist",
+    "tagline": "Things I'm chasing. Crossed off when they're real.",
+    "coffeeLink": "https://www.buymeacoffee.com/yourusername"
+  },
+  "items": [
+    {
+      "name": "Rolex Datejust 41",
+      "category": "Watches",
+      "price": "$9,500",
+      "note": "Oystersteel, blue dial. Keep coming back to this one.",
+      "link": "https://www.rolex.com/",
+      "fulfilled": false,
+      "dateAdded": "2026-08-07"
+    },
+    {
+      "name": "Sennheiser HD 800S",
+      "category": "Audio",
+      "price": "$1,700",
+      "note": "Open-back endgame headphones for the desk setup.",
+      "link": "",
+      "fulfilled": false,
+      "dateAdded": "2026-08-07"
+    },
+    {
+      "name": "First edition of a favorite novel",
+      "category": "Books",
+      "price": "$200",
+      "note": "Found one, still deciding if it's the right copy.",
+      "link": "",
+      "fulfilled": true,
+      "dateAdded": "2026-05-01",
+      "dateFulfilled": "2026-07-20"
+    }
+  ]
+}
