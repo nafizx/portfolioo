@@ -8,9 +8,35 @@
 
 <h1>Files</h1>
 
-<ul>
-  <li><a href="example.pdf" download>example.pdf</a></li>
-</ul>
+<ul id="list">Loading…</ul>
+
+<script>
+  const OWNER = "nafizx";
+  const REPO = "portfolioo";
+  const BRANCH = "main";
+  const PATH = "files"; // this folder's path inside the repo
+
+  fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}?ref=${BRANCH}`)
+    .then(r => r.json())
+    .then(data => {
+      const skip = ["index.html"];
+      const files = (Array.isArray(data) ? data : [])
+        .filter(f => f.type === "file" && !skip.includes(f.name));
+
+      const list = document.getElementById("list");
+      if (files.length === 0) {
+        list.textContent = "No files yet.";
+        return;
+      }
+      list.innerHTML = files
+        .map(f => `<li><a href="${encodeURIComponent(f.name)}" download="${f.name}">${f.name}</a></li>`)
+        .join("");
+    })
+    .catch(err => {
+      document.getElementById("list").textContent = "Couldn't load file list.";
+      console.error(err);
+    });
+</script>
 
 </body>
 </html>
