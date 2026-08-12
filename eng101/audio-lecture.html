@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Listening Lab — Comprehension Exercises</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f2ec;
+    --card: #fffefb;
+    --ink: #1c2a33;
+    --ink-soft: #566268;
+    --rule: #dcd6c8;
+    --teal: #33616f;
+    --amber: #b5762f;
+    --amber-soft: #f1e3cf;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--paper);
+    background-image:
+      linear-gradient(var(--rule) 1px, transparent 1px);
+    background-size: 100% 42px;
+    color: var(--ink);
+    margin: 0;
+    padding: 32px 18px 80px;
+    line-height: 1.65;
+  }
+
+  .sheet {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  .masthead {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .masthead .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 34px;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  /* Tabs styled like index-card dividers */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: -1px;
+    padding: 0 4px;
+  }
+
+  .tab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    background: #ece8dc;
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+    border-bottom: none;
+    padding: 10px 18px 12px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+
+  .tab.active {
+    background: var(--card);
+    color: var(--ink);
+    position: relative;
+    z-index: 2;
+  }
+
+  .tab:hover:not(.active) { background: #e4dfd0; }
+
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 0 10px 10px 10px;
+    padding: 34px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .lecture-title {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 18px;
+  }
+
+  /* Audio control — cassette-tab styling instead of a visible YT player */
+  .audio-strip {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--amber-soft);
+    border: 1px solid #e3cda3;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 30px;
+  }
+
+  .play-btn {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: none;
+    background: var(--amber);
+    color: #fffdf8;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .12s ease, background .15s ease;
+  }
+
+  .play-btn:hover { background: #9a6323; transform: scale(1.04); }
+
+  .audio-meta { font-size: 14px; color: var(--ink-soft); }
+  .audio-meta strong { color: var(--ink); display: block; font-size: 14.5px; margin-bottom: 2px; }
+
+  .yt-hidden {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; opacity: 0; pointer-events: none;
+  }
+
+  /* Question cards, numbered like exam items */
+  .q {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 4px 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .q:last-of-type { border-bottom: none; }
+
+  .q-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    color: var(--teal);
+    font-size: 13px;
+    padding-top: 2px;
+  }
+
+  .q-label {
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  .q p { margin: 4px 0; }
+  .q em { color: var(--ink-soft); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 2px;
+    font-size: 14.5px;
+  }
+  th, td {
+    border: 1px solid var(--rule);
+    padding: 8px 10px;
+    text-align: left;
+  }
+  th {
+    background: #efece1;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  ul.summary-guide {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+
+  /* Answer key */
+  .answers-toggle {
+    margin-top: 30px;
+    width: 100%;
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    padding: 13px 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background .15s ease;
+  }
+  .answers-toggle:hover { background: #274a55; }
+
+  .answers { display: none; margin-top: 22px; }
+  .answers.visible { display: block; }
+
+  .answer-item {
+    background: #f6f4ec;
+    border-left: 3px solid var(--teal);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    font-size: 14.5px;
+  }
+  .answer-item strong {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 4px;
+  }
+  .answer-item .fill-in {
+    color: #94826a;
+    font-style: italic;
+  }
+
+  .statement-list {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 0;
+    counter-reset: stmt;
+  }
+  .statement-list li {
+    display: flex;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--rule);
+    font-size: 14.5px;
+  }
+  .statement-list li:last-child { border-bottom: none; }
+  .statement-list li::before {
+    counter-increment: stmt;
+    content: counter(stmt);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    flex-shrink: 0;
+    width: 16px;
+    padding-top: 1px;
+  }
+
+  .choice-list {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+  }
+  .choice-list li {
+    padding: 6px 0 6px 26px;
+    position: relative;
+    font-size: 14.5px;
+  }
+  .choice-list li::before {
+    content: attr(data-letter);
+    position: absolute;
+    left: 0;
+    top: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 12.5px;
+    color: var(--amber);
+  }
+
+  @media (max-width: 560px) {
+    .panel { padding: 22px 18px; }
+    h1 { font-size: 26px; }
+    .q { grid-template-columns: 30px 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="masthead">
+    <span class="eyebrow">Listening Lab</span>
+    <h1>Comprehension Exercises</h1>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showLecture(1)">01 · Domestic Violence</button>
+    <button class="tab" onclick="showLecture(2)">02 · Happiness &amp; Energy</button>
+    <button class="tab" onclick="showLecture(3)">03 · Apples &amp; Health</button>
+    <button class="tab" onclick="showLecture(4)">04 · Immune System</button>
+  </div>
+
+  <!-- ===================== LECTURE 1 ===================== -->
+  <div class="panel active" id="panel-1">
+    <div class="lecture-title">Domestic Violence Presentation</div>
+
+    <div class="audio-strip">
+      <button id="playBtn1" class="play-btn" onclick="togglePlay(1)" aria-label="Play or pause audio">▶</button>
+      <div class="audio-meta">
+        <strong>Lecture Audio</strong>
+        <span id="playerStatus1">Loading player…</span>
+      </div>
+    </div>
+    <div class="yt-hidden"><div id="ytPlayer1"></div></div>
+
+    <div class="q"><div class="q-num">Q01</div><div>
+      <div class="q-label">Definition</div>
+      <p>What does domestic violence mean?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q02</div><div>
+      <div class="q-label">Three examples</div>
+      <p>Name three types of abuse mentioned in the audio.</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q03</div><div>
+      <div class="q-label">Fill in the blanks</div>
+      <p>Complete the information from the audio:</p>
+      <p><em>Abuse only seems to work in __________, so by telling everyone, you are bringing the problem out from the __________.</em></p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q04</div><div>
+      <div class="q-label">Concept</div>
+      <p>What is One Billion Rising?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q05</div><div>
+      <div class="q-label">Statistics</div>
+      <p>What do these statistics relate to?</p>
+      <table>
+        <thead><tr><th>Number</th><th>What does it refer to?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1.3 million</strong></td><td>____________________</td></tr>
+          <tr><td><strong>835,000</strong></td><td>____________________</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q06</div><div>
+      <div class="q-label">Organization / ranking / framework</div>
+      <p>i. How many parts is the presentation divided into?</p>
+      <p>ii. What are the key sections of the talk?</p>
+      <p>iii. What appears at the very end of the presentation before the Q&amp;A?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q07</div><div>
+      <div class="q-label">Three problems</div>
+      <p>Name three causes/reasons why domestic violence occurs according to the audio.</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q08</div><div>
+      <div class="q-label">Specific information</div>
+      <p>What type of global event took place on February 14th to protest violence against women?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q09</div><div>
+      <div class="q-label">Percentage / number</div>
+      <p>Accommodation and financial services are basic needs, but what percentage of assistance sought by women with children from Social Services was actually based on domestic or family violence?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q10</div><div>
+      <div class="q-label">Effect / consequence</div>
+      <p>Apart from physical harm, what has years of psychological abuse affected in a victim's mind regarding their ability to leave?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q11</div><div>
+      <div class="q-label">Three details</div>
+      <p>What three reasons did the speaker highlight for why victims decide to stay with an abusive partner?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q12</div><div>
+      <div class="q-label">Two actions</div>
+      <p>What two actions are governments, societies, and charities taking to help victims of domestic violence?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q13</div><div>
+      <div class="q-label">Three-sentence summary</div>
+      <p>Summarize the lecture in three sentences.</p>
+      <ul class="summary-guide">
+        <li><strong>Sentence 1:</strong> Main topic</li>
+        <li><strong>Sentence 2:</strong> Main problems/findings</li>
+        <li><strong>Sentence 3:</strong> Examples, solutions, or conclusion</li>
+      </ul>
+    </div></div>
+
+    <button class="answers-toggle" onclick="toggleAnswers(1)">Show / hide answer key</button>
+    <div class="answers" id="answers-1">
+      <div class="answer-item"><strong>01 · Definition</strong>It is any incident of threatening behavior, violence, or abuse between adults who are or who have been intimate partners or family members, regardless of gender or sexuality.</div>
+      <div class="answer-item"><strong>02 · Three examples</strong>Any three of: psychological, physical, sexual, financial, or emotional abuse.</div>
+      <div class="answer-item"><strong>03 · Fill in the blanks</strong>Blank 1: secret &nbsp;|&nbsp; Blank 2: darkness</div>
+      <div class="answer-item"><strong>04 · Concept</strong>An uprising of women across the world where over a billion danced in the streets to rise up against violence towards women and demand more equal rights.</div>
+      <div class="answer-item"><strong>05 · Statistics</strong>1.3 million: people abused in the UK last year. &nbsp;|&nbsp; 835,000: men abused by women in the UK last year.</div>
+      <div class="answer-item"><strong>06 · Framework</strong>i. Five parts. ii. Definition, statistics, causes, solutions, evaluation/conclusion. iii. A bibliography.</div>
+      <div class="answer-item"><strong>07 · Three problems</strong>Any three of: jealousy/possessiveness, chores not done, sex/withholding sex, blame, denial, or being abused as a child.</div>
+      <div class="answer-item"><strong>08 · Specific information</strong>"One Billion Rising" — a mass street-dancing uprising.</div>
+      <div class="answer-item"><strong>09 · Percentage</strong>Nearly 50%.</div>
+      <div class="answer-item"><strong>10 · Effect</strong>It creates weakness and a lack of confidence to leave the relationship.</div>
+      <div class="answer-item"><strong>11 · Three details</strong>Any three of: love is crazy, fear of worse violence, lack of finances, low confidence, believing it's their own fault, or the abuser apologizing.</div>
+      <div class="answer-item"><strong>12 · Two actions</strong>Any two of: campaigning/leaflets, advertising to help victims, or raising societal recognition of the issue.</div>
+      <div class="answer-item"><strong>13 · Summary</strong>1) Overview of domestic violence, its definition, statistics, causes, and solutions. 2) It affects millions globally, mainly women, stemming from psychological, emotional, and physical factors. 3) Overcoming it requires breaking the silence through support groups, exit plans, government campaigns, and movements like One Billion Rising.</div>
+    </div>
+  </div>
+
+  <!-- ===================== LECTURE 2 ===================== -->
+  <div class="panel" id="panel-2">
+    <div class="lecture-title">Happiness &amp; Energy: Well-being and Resources</div>
+
+    <div class="audio-strip">
+      <button id="playBtn2" class="play-btn" onclick="togglePlay(2)" aria-label="Play or pause audio">▶</button>
+      <div class="audio-meta">
+        <strong>Lecture Audio</strong>
+        <span id="playerStatus2">Loading player…</span>
+      </div>
+    </div>
+    <div class="yt-hidden"><div id="ytPlayer2"></div></div>
+
+    <div class="q"><div class="q-num">Q01</div><div>
+      <div class="q-label">Definition</div>
+      <p>What does a smart meter mean in the context of the discussion?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q02</div><div>
+      <div class="q-label">Three examples</div>
+      <p>Name three of the "five ways to well-being" mentioned in the audio.</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q03</div><div>
+      <div class="q-label">Fill in the blanks</div>
+      <p>Complete the information from the audio:</p>
+      <p><em>Costa Rica is the happiest nation on the planet and manages on just a __________ of its __________.</em></p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q04</div><div>
+      <div class="q-label">Concept</div>
+      <p>What is the 2050 energy target?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q05</div><div>
+      <div class="q-label">Statistics</div>
+      <p>What do these statistics relate to?</p>
+      <table>
+        <thead><tr><th>Number</th><th>What does it refer to?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>5 million</strong></td><td>____________________</td></tr>
+          <tr><td><strong>66 million</strong></td><td>____________________</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q06</div><div>
+      <div class="q-label">Organization / ranking / framework</div>
+      <p>i. How many "ways to well-being" are mentioned in the talk?</p>
+      <p>ii. What are three key ways to well-being discussed by the speakers?</p>
+      <p>iii. Which country is ranked number one for achieving happiness with low resource usage?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q07</div><div>
+      <div class="q-label">Three problems</div>
+      <p>Name three key problems or difficulties mentioned regarding comparing Costa Rica's resource usage to that of larger nations like the UK or USA.</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q08</div><div>
+      <div class="q-label">Specific information</div>
+      <p>What type of study did Stanford University conduct regarding happiness and social relationships?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q09</div><div>
+      <div class="q-label">Percentage / number</div>
+      <p>What percentage reduction in energy usage has the UK government targeted to achieve by 2050?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q10</div><div>
+      <div class="q-label">Effect / consequence</div>
+      <p>Apart from geographical distance, what has people living far apart affected regarding social relationships?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q11</div><div>
+      <div class="q-label">Three details</div>
+      <p>What three details did the speaker highlight about smart meters and government action since the 2010 lecture?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q12</div><div>
+      <div class="q-label">Two actions</div>
+      <p>What two actions or elements need to be combined to create a "perfect balance" for society's progress?</p>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q13</div><div>
+      <div class="q-label">Three-sentence summary</div>
+      <p>Summarize the discussion in three sentences.</p>
+      <ul class="summary-guide">
+        <li><strong>Sentence 1:</strong> Main topic</li>
+        <li><strong>Sentence 2:</strong> Main problems/findings</li>
+        <li><strong>Sentence 3:</strong> Examples, solutions, or conclusion</li>
+      </ul>
+    </div></div>
+
+    <button class="answers-toggle" onclick="toggleAnswers(2)">Show / hide answer key</button>
+    <div class="answers" id="answers-2">
+      <div class="answer-item"><strong>01 · Definition</strong>A device that displays day-to-day energy consumption so people can see and pay attention to how much energy they are using.</div>
+      <div class="answer-item"><strong>02 · Three examples</strong>Any three of: connect (social relationships), be active, keep learning, give, or take notice.</div>
+      <div class="answer-item"><strong>03 · Fill in the blanks</strong>Blank 1: quarter &nbsp;|&nbsp; Blank 2: resources</div>
+      <div class="answer-item"><strong>04 · Concept</strong>A government target to reduce national energy consumption by 80% by the year 2050.</div>
+      <div class="answer-item"><strong>05 · Statistics</strong>5 million: the population of Costa Rica. &nbsp;|&nbsp; 66 million: the population of the UK.</div>
+      <div class="answer-item"><strong>06 · Framework</strong>i. Five ways to well-being. ii. Any three of: connect, keep learning, give, be active, or take notice. iii. Costa Rica.</div>
+      <div class="answer-item"><strong>07 · Three problems</strong>Any three of: the population mismatch (5 million vs 66 million), the added complexity of governing well-being/resources for 60+ million more people, the extra resources needed to maintain relationships when people live further apart in developed societies, or high-consuming Western media being reluctant to highlight overconsumption.</div>
+      <div class="answer-item"><strong>08 · Specific information</strong>A 100-year study on happiness, focused on the role of social relationships.</div>
+      <div class="answer-item"><strong>09 · Percentage</strong>An 80% reduction in energy usage.</div>
+      <div class="answer-item"><strong>10 · Effect</strong>It requires consuming significantly more resources — e.g. transport and communication technology — to maintain those distant relationships.</div>
+      <div class="answer-item"><strong>11 · Three details</strong>Nearly 10 years had passed since the original 2010 lecture (discussed in 2019); the lecture predicted smart meters would bring more media advertising and government control over energy use; and the speaker noted none of those predicted controls or coverage have actually materialized.</div>
+      <div class="answer-item"><strong>12 · Two actions</strong>Individual initiative/personal ambition, combined with government targets and policy.</div>
+      <div class="answer-item"><strong>13 · Summary</strong>1) The speakers discuss a lecture on sustainability, contrasting long-term environmental targets with personal well-being indicators. 2) They debate whether a small, low-resource nation like Costa Rica can be a practical model for larger, resource-heavy countries like the UK. 3) They conclude real progress needs a balance of government-enforced energy targets and individual effort toward well-being, such as fostering social relationships.</div>
+    </div>
+  </div>
+
+  <!-- ===================== LECTURE 3 ===================== -->
+  <div class="panel" id="panel-3">
+    <div class="lecture-title">BBC 6 Minute English: The Health Benefits of Apples</div>
+
+    <div class="audio-strip">
+      <button id="playBtn3" class="play-btn" onclick="togglePlay(3)" aria-label="Play or pause audio">▶</button>
+      <div class="audio-meta">
+        <strong>Lecture Audio</strong>
+        <span id="playerStatus3">Loading player…</span>
+      </div>
+    </div>
+    <div class="yt-hidden"><div id="ytPlayer3"></div></div>
+
+    <div class="q"><div class="q-num">Q01</div><div>
+      <div class="q-label">Not discussed</div>
+      <p>Which statements were <em>not</em> discussed in the audio?</p>
+      <ul class="statement-list">
+        <li>The speakers explain famous proverbs like "Actions speak louder than words."</li>
+        <li>Dr. Michael Mosley talks about eating apples in his porridge and with yoghurt.</li>
+        <li>The speakers discuss how imported apples cause environmental pollution during shipping.</li>
+        <li>Flavonoids in apple skins help improve blood pressure, brain health, and heart health.</li>
+        <li>The presenters explain how apple trees are commercially grown in modern greenhouses.</li>
+        <li>Dr. Michael Mosley describes baked apples as one of his favorite ways to eat them.</li>
+        <li>"Golden Pippin" is identified as a real variety of English apple, while others mentioned are pears.</li>
+        <li>The audio recommends eating at least five apples every day to prevent stomach diseases.</li>
+      </ul>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q02</div><div>
+      <div class="q-label">Multiple choice: meaning</div>
+      <p>When the speaker says "peckish," what does it mean?</p>
+      <ul class="choice-list">
+        <li data-letter="a)">Very hungry and needing a full meal</li>
+        <li data-letter="b)">Slightly hungry</li>
+        <li data-letter="c)">Having a craving for sweet foods</li>
+      </ul>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q03</div><div>
+      <div class="q-label">Multiple choice: concept</div>
+      <p>Dr. Mosley chooses an apple instead of an "exotic" superfood. What makes a food "exotic"?</p>
+      <ul class="choice-list">
+        <li data-letter="a)">It is grown locally in English orchards</li>
+        <li data-letter="b)">It is cheap and available in every supermarket</li>
+        <li data-letter="c)">It is unusual and exciting, often coming from an unfamiliar or far-away place</li>
+      </ul>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q04</div><div>
+      <div class="q-label">Multiple choice: main information</div>
+      <p>Why is eating an apple with the skin on recommended by scientists?</p>
+      <ul class="choice-list">
+        <li data-letter="a)">The skin contains flavonoids and nutrients that support heart, brain, and gut health</li>
+        <li data-letter="b)">Apple skin is the only part of the fruit that tastes sweet</li>
+        <li data-letter="c)">Cooking an apple with the skin removed doubles its health benefits</li>
+      </ul>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q05</div><div>
+      <div class="q-label">Vocabulary meaning</div>
+      <p>Write the meaning of the words discussed in the audio.</p>
+      <table>
+        <thead><tr><th>Vocabulary</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Proverb</strong></td><td>____________________</td></tr>
+          <tr><td><strong>Peckish</strong></td><td>____________________</td></tr>
+          <tr><td><strong>Exotic</strong></td><td>____________________</td></tr>
+          <tr><td><strong>Trim the waistline</strong></td><td>____________________</td></tr>
+          <tr><td><strong>Versatile</strong></td><td>____________________</td></tr>
+          <tr><td><strong>In good shape</strong></td><td>____________________</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+
+    <button class="answers-toggle" onclick="toggleAnswers(3)">Show / hide answer key</button>
+    <div class="answers" id="answers-3">
+      <div class="answer-item"><strong>01 · Not discussed</strong>Statements 3, 5, and 8 were <em>not</em> discussed: imported apples causing shipping pollution, apple trees grown in modern greenhouses, and a recommendation to eat five apples a day to prevent stomach disease.</div>
+      <div class="answer-item"><strong>02 · Meaning</strong>b — slightly hungry.</div>
+      <div class="answer-item"><strong>03 · Concept</strong>c — unusual and exciting, often from a far-away or unfamiliar place.</div>
+      <div class="answer-item"><strong>04 · Main information</strong>a — the skin contains flavonoids and nutrients that support heart, brain, and gut health.</div>
+      <div class="answer-item"><strong>05 · Vocabulary</strong>
+        <strong style="margin-top:8px;">Proverb</strong>A short, well-known sentence or expression giving traditional advice or common sense.
+        <strong style="margin-top:8px;">Peckish</strong>Slightly hungry.
+        <strong style="margin-top:8px;">Exotic</strong>Unusual and exciting, often because it comes from a far-away or unfamiliar place.
+        <strong style="margin-top:8px;">Trim the waistline</strong>Keep a healthy body weight with no extra fat around the waist.
+        <strong style="margin-top:8px;">Versatile</strong>Able to be used for many different purposes or in many different ways.
+        <strong style="margin-top:8px;">In good shape</strong>In a good state of health or good condition.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== LECTURE 4 ===================== -->
+  <div class="panel" id="panel-4">
+    <div class="lecture-title">BBC 6 Minute English: Can We Boost the Immune System?</div>
+
+    <div class="audio-strip">
+      <button id="playBtn4" class="play-btn" onclick="togglePlay(4)" aria-label="Play or pause audio">▶</button>
+      <div class="audio-meta">
+        <strong>Lecture Audio</strong>
+        <span id="playerStatus4">Loading player…</span>
+      </div>
+    </div>
+    <div class="yt-hidden"><div id="ytPlayer4"></div></div>
+
+    <div class="q"><div class="q-num">Q01</div><div>
+      <div class="q-label">Not discussed</div>
+      <p>Which statements were <em>not</em> discussed in the audio?</p>
+      <ul class="statement-list">
+        <li>The presenters discuss popular wellness trends like ginger shots, turmeric, and cold-water swimming.</li>
+        <li>Neil asks a quiz question about the percentage of human immune cells located in the gut.</li>
+        <li>The speakers explain the precise molecular structure of vitamin C supplements.</li>
+        <li>The expert explains that the immune system is a complex network of tissues, cells, and organs, rather than a single muscle.</li>
+        <li>The presenters give detailed instructions on how to build a sauna at home for immune health.</li>
+        <li>The speakers talk about how lifestyle factors like sleep, exercise, and diet influence immunity.</li>
+        <li>The discussion touches on whether claims made by wellness products are backed by solid scientific evidence.</li>
+        <li>The audio recommends taking daily prescription antibiotics to permanently boost immune response.</li>
+      </ul>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q02</div><div>
+      <div class="q-label">Multiple choice: meaning</div>
+      <p>When the speaker says "hype," what does it mean?</p>
+      <ul class="choice-list">
+        <li data-letter="a)">A state of physical exhaustion or fatigue</li>
+        <li data-letter="b)">Intense or exaggerated publicity and promotion</li>
+        <li data-letter="c)">A proven medical treatment recommended by doctors</li>
+      </ul>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q03</div><div>
+      <div class="q-label">Multiple choice: concept</div>
+      <p>What is meant by the concept of "boosting" the immune system?</p>
+      <ul class="choice-list">
+        <li data-letter="a)">Scientifically replacing human immune cells with artificial ones</li>
+        <li data-letter="b)">Trying to make the immune system stronger or more active through wellness habits or products</li>
+        <li data-letter="c)">Temporarily shutting down the immune system to allow the body to rest</li>
+      </ul>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q04</div><div>
+      <div class="q-label">Multiple choice: main information</div>
+      <p>Which of the following is the best/most appropriate option regarding wellness trends and immune health?</p>
+      <ul class="choice-list">
+        <li data-letter="a)">Cold-water swimming and ginger shots are guaranteed cure-alls for every infection</li>
+        <li data-letter="b)">The immune system cannot simply be "boosted" by quick fixes, but balanced lifestyle habits like good sleep and diet help it function properly</li>
+        <li data-letter="c)">Taking high-dose supplements is always more effective than getting enough natural sleep</li>
+      </ul>
+    </div></div>
+
+    <div class="q"><div class="q-num">Q05</div><div>
+      <div class="q-label">Vocabulary meaning</div>
+      <p>Write the meaning of the words discussed in the audio.</p>
+      <table>
+        <thead><tr><th>Vocabulary</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Immune system</strong></td><td>____________________</td></tr>
+          <tr><td><strong>Hype</strong></td><td>____________________</td></tr>
+          <tr><td><strong>Gut health</strong></td><td>____________________</td></tr>
+          <tr><td><strong>Trend</strong></td><td>____________________</td></tr>
+          <tr><td><strong>Cure-all</strong></td><td>____________________</td></tr>
+          <tr><td><strong>Evidence</strong></td><td>____________________</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+
+    <button class="answers-toggle" onclick="toggleAnswers(4)">Show / hide answer key</button>
+    <div class="answers" id="answers-4">
+      <div class="answer-item"><strong>01 · Not discussed</strong>Statements 3, 5, and 8 were <em>not</em> discussed: the precise molecular structure of vitamin C supplements, instructions for building a home sauna, and a recommendation to take daily prescription antibiotics.</div>
+      <div class="answer-item"><strong>02 · Meaning</strong>b — intense or exaggerated publicity and promotion.</div>
+      <div class="answer-item"><strong>03 · Concept</strong>b — trying to make the immune system stronger or more active through wellness habits or products.</div>
+      <div class="answer-item"><strong>04 · Main information</strong>b — the immune system can't simply be "boosted" by quick fixes, but balanced lifestyle habits like good sleep and diet help it function properly.</div>
+      <div class="answer-item"><strong>05 · Vocabulary</strong>
+        <strong style="margin-top:8px;">Immune system</strong>The body's complex biological network of cells, tissues, and organs that defends against infections and diseases.
+        <strong style="margin-top:8px;">Hype</strong>Extensive or exaggerated promotion/publicity surrounding a product or concept.
+        <strong style="margin-top:8px;">Gut health</strong>The overall function and microbial balance of the digestive tract.
+        <strong style="margin-top:8px;">Trend</strong>A general direction in which something is developing or changing in popularity.
+        <strong style="margin-top:8px;">Cure-all</strong>A magic solution or remedy claimed to solve or cure all problems or illnesses.
+        <strong style="margin-top:8px;">Evidence</strong>Facts, figures, or information indicating whether a belief or proposition is true and valid.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+  const VIDEO_IDS = { 1: 'TxurfmCCHGk', 2: 'npAOZtTWUyg', 3: '_5siHrpPnmw', 4: '9hus12iCyL8' };
+  const players = {};
+  let apiReady = false;
+  const pendingCreates = [];
+
+  function onYouTubeIframeAPIReady() {
+    apiReady = true;
+    pendingCreates.forEach(fn => fn());
+  }
+
+  function createPlayer(n) {
+    const build = () => {
+      players[n] = new YT.Player('ytPlayer' + n, {
+        videoId: VIDEO_IDS[n],
+        playerVars: { rel: 0, origin: window.location.origin },
+        events: {
+          onReady: () => { document.getElementById('playerStatus' + n).textContent = 'Ready — press play'; },
+          onStateChange: (e) => onStateChange(n, e),
+          onError: () => { document.getElementById('playerStatus' + n).textContent = 'This video failed to load.'; }
+        }
+      });
+    };
+    if (apiReady) build(); else pendingCreates.push(build);
+  }
+
+  function onStateChange(n, event) {
+    const btn = document.getElementById('playBtn' + n);
+    const status = document.getElementById('playerStatus' + n);
+    if (event.data === YT.PlayerState.PLAYING) { btn.textContent = '❚❚'; status.textContent = 'Playing…'; }
+    else if (event.data === YT.PlayerState.PAUSED) { btn.textContent = '▶'; status.textContent = 'Paused'; }
+    else if (event.data === YT.PlayerState.ENDED) { btn.textContent = '▶'; status.textContent = 'Finished'; }
+  }
+
+  function togglePlay(n) {
+    const p = players[n];
+    if (!p || typeof p.getPlayerState !== 'function') return;
+    if (p.getPlayerState() === YT.PlayerState.PLAYING) p.pauseVideo(); else p.playVideo();
+  }
+
+  function toggleAnswers(n) {
+    document.getElementById('answers-' + n).classList.toggle('visible');
+  }
+
+  function showLecture(n) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + n).classList.add('active');
+    document.querySelectorAll('.tab')[n - 1].classList.add('active');
+    if (!players[n]) createPlayer(n);
+  }
+
+  // Create the first player immediately; second is created on tab switch.
+  createPlayer(1);
+</script>
+</body>
+</html>
