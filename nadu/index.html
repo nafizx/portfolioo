@@ -241,20 +241,6 @@
     position:fixed; inset:0; z-index:5; pointer-events:none;
   }
 
-  .mute{
-    position:fixed;
-    bottom:22px; right:22px;
-    z-index:7;
-    width:42px; height:42px;
-    border-radius:50%;
-    background: var(--glass);
-    border:1px solid var(--glass-brd);
-    display:flex; align-items:center; justify-content:center;
-    color: var(--ink-dim);
-    font-size:16px;
-  }
-  .mute:hover{ color:var(--ink); background:rgba(255,255,255,0.12); }
-
   .credit{
     position:fixed; bottom:16px; left:18px;
     font-size:.68rem;
@@ -308,7 +294,6 @@
   </div>
 </div>
 
-<button class="mute" id="muteBtn" title="Toggle sound" aria-label="Toggle sound">🔊</button>
 <div class="credit">made with too much love</div>
 
 <script>
@@ -354,12 +339,15 @@
   const card = document.getElementById('card');
   const stage = document.getElementById('stage');
   const celebrate = document.getElementById('celebrate');
-  const muteBtn = document.getElementById('muteBtn');
   const replayBtn = document.getElementById('replayBtn');
   const marqueeLine = document.getElementById('marqueeLine');
 
+  // where the "no" button lives originally, so it can be put back on replay
+  const noBtnHome = noBtn.parentNode;
+  const noBtnNextSibling = noBtn.nextSibling;
+
   let noCount = 0;
-  let muted = false;
+  const muted = false; // sound is on by default; flip to true to silence
   let audioCtx = null;
 
   /* ---------------- tiny synth sounds (no external audio files) ---------------- */
@@ -437,7 +425,10 @@
     requestAnimationFrame(tickField);
   }
   resizeField(); spawnParticles(); tickField();
-  window.addEventListener('resize', () => { resizeField(); spawnParticles(); });
+  window.addEventListener('resize', () => {
+    resizeField(); spawnParticles();
+    if (noBtn.classList.contains('fleeing')) moveNoButton();
+  });
 
   /* ---------------- confetti burst on yes ---------------- */
   const confettiCanvas = document.getElementById('confettiCanvas');
@@ -528,17 +519,39 @@
     spawnMiniHeart(t.clientX, t.clientY);
   });
 
-  /* ---------------- the "no" button dodges ---------------- */
+  /* ---------------- the "no" button dodges ----------------
+     Important: .card uses backdrop-filter, which (per spec) creates a
+     new containing block for any position:fixed descendant. That means
+     a fixed-positioned button left inside .card would anchor its
+     left/top to the CARD's box, not the real viewport — so it could
+     fly off past the edge of the screen. Fix: move the button out to
+     <body> the first time it flees, so "fixed" is relative to the
+     actual window, then clamp against the true visible area. */
+  function ensureEscaped(){
+    if (noBtn.parentNode !== document.body){
+      document.body.appendChild(noBtn);
+    }
+  }
+
   function moveNoButton(){
-    const margin = 60;
-    const w = noBtn.offsetWidth, h = noBtn.offsetHeight;
-    const maxX = window.innerWidth - w - margin;
-    const maxY = window.innerHeight - h - margin;
-    const x = margin + Math.random() * Math.max(maxX - margin, 1);
-    const y = margin + Math.random() * Math.max(maxY - margin, 1);
+    ensureEscaped();
     noBtn.classList.add('fleeing');
-    noBtn.style.left = x + 'px';
-    noBtn.style.top  = y + 'px';
+
+    // use the visualViewport when available so mobile browser chrome
+    // (address bar showing/hiding) can't push the button off-screen
+    const vw = (window.visualViewport && window.visualViewport.width)  || window.innerWidth;
+    const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    const margin = 16;
+    const w = noBtn.offsetWidth  || 140;
+    const h = noBtn.offsetHeight || 48;
+
+    const maxX = Math.max(vw - w - margin, margin);
+    const maxY = Math.max(vh - h - margin, margin);
+    const x = margin + Math.random() * (maxX - margin);
+    const y = margin + Math.random() * (maxY - margin);
+
+    noBtn.style.left = Math.round(x) + 'px';
+    noBtn.style.top  = Math.round(y) + 'px';
   }
 
   function growYesButton(){
@@ -603,15 +616,13 @@
       noCount = 0;
       noBtn.classList.remove('fleeing');
       noBtn.style.left = ''; noBtn.style.top = '';
+      if (noBtn.parentNode === document.body){
+        noBtnHome.insertBefore(noBtn, noBtnNextSibling);
+      }
       yesBtn.style.fontSize = '1rem';
       yesBtn.style.padding = '14px 30px';
       subText.textContent = "Take your time. I've been waiting all year for this.";
     }, 300);
-  });
-
-  muteBtn.addEventListener('click', () => {
-    muted = !muted;
-    muteBtn.textContent = muted ? '🔇' : '🔊';
   });
 
 })();
