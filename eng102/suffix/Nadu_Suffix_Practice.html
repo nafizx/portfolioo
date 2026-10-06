@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nadu's Suffix Garden 🌷</title>
+<style>
+:root{
+  --pink:#ff7eb6; --rose:#ff5c9a; --cream:#fff9fc; --lav:#efe7ff;
+  --purple:#8064c7; --ink:#463b50; --green:#59b88a; --red:#ef6d7a;
+  --card:#ffffff; --shadow:0 12px 35px rgba(118,75,112,.13);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;
+  color:var(--ink);background:
+  radial-gradient(circle at 10% 10%,#ffd9e9 0 7%,transparent 25%),
+  radial-gradient(circle at 90% 5%,#e7ddff 0 8%,transparent 27%),
+  linear-gradient(135deg,#fff7fb,#f8f5ff 55%,#fff9ef);
+  min-height:100vh;
+}
+header{padding:42px 20px 25px;text-align:center}
+.bunny{font-size:46px;animation:bob 2.5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px) rotate(2deg)}}
+h1{margin:8px 0 5px;font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-1px}
+.subtitle{margin:0 auto;max-width:650px;color:#796d80;font-size:1rem}
+.container{max-width:1000px;margin:auto;padding:0 18px 50px}
+.stats{
+ display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0;
+}
+.stat{background:rgba(255,255,255,.8);backdrop-filter:blur(10px);padding:16px;border-radius:18px;text-align:center;box-shadow:var(--shadow)}
+.stat b{display:block;font-size:1.45rem;color:var(--rose)}
+.tabs{display:flex;gap:8px;overflow:auto;padding:5px;margin-bottom:16px}
+.tab{border:0;background:#fff;padding:11px 16px;border-radius:999px;color:#6e6173;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 4px 15px rgba(80,50,90,.07)}
+.tab.active{background:var(--rose);color:#fff}
+.panel{display:none}.panel.active{display:block}
+.card{background:rgba(255,255,255,.92);border-radius:25px;padding:24px;box-shadow:var(--shadow);margin-bottom:16px}
+h2{margin-top:0}
+.rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.rule{padding:15px;border-radius:17px;background:linear-gradient(145deg,#fff,#f7efff);border:1px solid #eee2f5}
+.rule strong{color:var(--purple);font-size:1.05rem}.rule p{margin:7px 0 0;font-size:.92rem}
+.quiz-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+.progress{height:9px;background:#f0e9f2;border-radius:99px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--rose),#b38aff);transition:.3s}
+.question{font-size:1.13rem;font-weight:750;line-height:1.5}
+.options{display:grid;gap:10px;margin-top:17px}
+.option{
+ border:2px solid #eee5f1;background:#fff;padding:13px 15px;border-radius:15px;text-align:left;
+ cursor:pointer;color:var(--ink);font-size:1rem;transition:.18s;
+}
+.option:hover{transform:translateY(-1px);border-color:#ffc0d9}
+.option.correct{border-color:var(--green);background:#eafaf2}.option.wrong{border-color:var(--red);background:#fff0f2}
+.feedback{margin-top:15px;padding:13px 15px;border-radius:14px;display:none}
+.feedback.show{display:block}.feedback.good{background:#eafaf2;color:#287452}.feedback.bad{background:#fff0f2;color:#a53d4a}
+.btn{
+ border:0;background:var(--rose);color:#fff;font-weight:800;padding:12px 18px;border-radius:14px;cursor:pointer;
+ box-shadow:0 7px 16px rgba(255,92,154,.22);margin-top:16px
+}
+.btn.secondary{background:#eee7ff;color:#6851a8;box-shadow:none}
+.center{text-align:center}
+.result{font-size:2.3rem;font-weight:900;color:var(--rose)}
+.flash{display:flex;justify-content:center;align-items:center;min-height:180px;text-align:center}
+.flash-word{font-size:2rem;font-weight:900;color:var(--purple)}
+input{
+ width:100%;padding:14px;border:2px solid #eee3f1;border-radius:14px;font-size:1rem;outline:none;
+}
+input:focus{border-color:#ffb2d0}
+.small{font-size:.88rem;color:#887c8b}
+footer{text-align:center;padding:10px 0 25px;color:#9b8e9d;font-size:.85rem}
+@media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<header>
+  <div class="bunny">🐰🌷</div>
+  <h1>Nadu's Suffix Garden</h1>
+  <p class="subtitle">A tiny cute place to practice ENG102 suffixes without letting English grammar ruin the day. 💗</p>
+</header>
+
+<main class="container">
+  <div class="stats">
+    <div class="stat"><b id="score">0</b>points</div>
+    <div class="stat"><b id="streak">0</b>streak 🔥</div>
+    <div class="stat"><b id="best">0</b>best score</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('learn',this)">🌱 Learn</button>
+    <button class="tab" onclick="showTab('quiz',this)">🧁 Quiz</button>
+    <button class="tab" onclick="showTab('mixed',this)">🎀 Mixed Test</button>
+    <button class="tab" onclick="showTab('flash',this)">✨ Flashcards</button>
+  </div>
+
+  <section id="learn" class="panel active">
+    <div class="card">
+      <h2>🌸 Suffix cheat sheet</h2>
+      <p class="small">Remember: the ending can tell you what kind of word you are looking for.</p>
+      <div class="rule-grid">
+        <div class="rule"><strong>-er / -or</strong><p>person/thing that does something<br><b>teach → teacher</b></p></div>
+        <div class="rule"><strong>-ee</strong><p>person who receives an action<br><b>employ → employee</b></p></div>
+        <div class="rule"><strong>-ist</strong><p>person involved in an activity/belief<br><b>violin → violinist</b></p></div>
+        <div class="rule"><strong>-tion / -sion</strong><p>verb → noun<br><b>admit → admission</b></p></div>
+        <div class="rule"><strong>-ness</strong><p>adjective → noun<br><b>happy → happiness</b></p></div>
+        <div class="rule"><strong>-able / -ible</strong><p>can be done<br><b>read → readable</b></p></div>
+        <div class="rule"><strong>-ment</strong><p>often forms nouns<br><b>enjoy → enjoyment</b></p></div>
+        <div class="rule"><strong>-ity</strong><p>state/quality noun<br><b>scarce → scarcity</b></p></div>
+        <div class="rule"><strong>-hood</strong><p>state/condition<br><b>child → childhood</b></p></div>
+        <div class="rule"><strong>-ship</strong><p>relationship/status<br><b>friend → friendship</b></p></div>
+        <div class="rule"><strong>-ive</strong><p>often an adjective<br><b>produce → productive</b></p></div>
+        <div class="rule"><strong>-ous</strong><p>adjective, often “full of/characterized by”<br><b>danger → dangerous</b></p></div>
+        <div class="rule"><strong>-ful</strong><p>adjective, “full of”<br><b>care → careful</b></p></div>
+        <div class="rule"><strong>-less</strong><p>adjective, “without”<br><b>harm → harmless</b></p></div>
+        <div class="rule"><strong>-ify</strong><p>makes a verb<br><b>pure → purify</b></p></div>
+        <div class="rule"><strong>-ise / -ize</strong><p>adjective → verb<br><b>modern → modernise</b></p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>💡 Nadu's golden trick</h2>
+      <p><b>-ER = DOER</b> → teacher, worker, employer</p>
+      <p><b>-EE = RECEIVER</b> → employee, trainee, payee</p>
+      <p><b>-ABLE = CAN BE DONE</b> → readable, countable, forgivable</p>
+      <p><b>-NESS / -ITY = QUALITY OR STATE</b> → happiness, scarcity, flexibility</p>
+    </div>
+  </section>
+
+  <section id="quiz" class="panel">
+    <div class="card">
+      <div class="quiz-top"><b id="qnum">Question 1 / 15</b><span id="qpoints">+1</span></div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <div id="quizArea" style="margin-top:22px"></div>
+      <button class="btn" id="nextBtn" style="display:none" onclick="nextQuestion()">Next 💕</button>
+    </div>
+  </section>
+
+  <section id="mixed" class="panel">
+    <div class="card">
+      <h2>🎀 Mini ENG102 Test</h2>
+      <p>10 questions. No hints. No mercy. Tiny amount of academic suffering.</p>
+      <div id="mixedArea"></div>
+      <button class="btn" onclick="startMixed()">Start Test</button>
+    </div>
+  </section>
+
+  <section id="flash" class="panel">
+    <div class="card flash">
+      <div>
+        <div class="small">What does this suffix usually mean?</div>
+        <div class="flash-word" id="flashWord">-able / -ible</div>
+        <div id="flashAnswer" style="margin-top:12px;display:none"></div>
+        <button class="btn" onclick="revealFlash()">Show meaning 💗</button>
+        <button class="btn secondary" onclick="nextFlash()">Next ✨</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>Made for one very special ENG102 student 🌷 • Keep going, Nadu. You are doing better than you think. 💗</footer>
+</main>
+
+<script>
+const questions=[
+ {q:"A person who receives a payment is a...",o:["payer","payee","payment","paying"],a:1,e:"-ee often identifies the receiver. Payee receives the payment."},
+ {q:"A person who teaches is a...",o:["teachee","teaching","teacher","teachist"],a:2,e:"-er identifies the person who does the action: teach → teacher."},
+ {q:"The noun form of 'admit' is...",o:["admitter","admission","admitness","admitable"],a:1,e:"admit → admission. -sion/-tion often makes nouns from verbs."},
+ {q:"'Happy' becomes which noun?",o:["happity","happyment","happiness","happiful"],a:2,e:"happy → happiness. The y changes to i before -ness."},
+ {q:"Which word means 'can be forgiven'?",o:["forgiveness","forgiving","forgivable","forgiver"],a:2,e:"-able means 'can be done': forgive → forgivable."},
+ {q:"Which is a verb?",o:["productive","productivity","production","modernise"],a:3,e:"-ise/-ize commonly forms verbs: modern → modernise."},
+ {q:"Which word means a person who is employed?",o:["employer","employee","employment","employable"],a:1,e:"Employer employs. Employee is employed and receives the action."},
+ {q:"Scarce becomes...",o:["scarcity","scarceness","scarcement","scarceful"],a:0,e:"scarce → scarcity. -ity commonly forms abstract nouns."},
+ {q:"Which word is an adjective?",o:["friendship","dangerous","arrival","purify"],a:1,e:"dangerous is an adjective. -ous commonly forms adjectives."},
+ {q:"A person who plays the violin is a...",o:["violinee","violinist","violinor","violinment"],a:1,e:"-ist is often used for people involved in an activity or playing instruments."},
+ {q:"'Enjoy' becomes which noun?",o:["enjoyer","enjoyable","enjoyment","enjoyness"],a:2,e:"enjoy → enjoyment. -ment commonly forms nouns."},
+ {q:"Which means 'without harm'?",o:["harmful","harmless","harmity","harmment"],a:1,e:"-less means 'without': harm → harmless."},
+ {q:"Which word means 'the state of being flexible'?",o:["flexible","flexibility","flexment","flexion"],a:1,e:"flexible → flexibility. -ity forms a noun describing a state/quality."},
+ {q:"A person who supervises is a...",o:["supervisee","supervisor","supervisionless","supervisist"],a:1,e:"supervisor is the person who supervises."},
+ {q:"Pure becomes which verb meaning 'make pure'?",o:["purity","pureful","purify","purous"],a:2,e:"-ify makes a verb meaning make/become: pure → purify."}
+];
+let qi=0,score=0,streak=0,best=Number(localStorage.getItem('pookieBest')||0),answered=false;
+document.getElementById('best').textContent=best;
+
+function showTab(id,btn){
+ document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ document.getElementById(id).classList.add('active'); btn.classList.add('active');
+ if(id==='quiz') renderQuestion();
+}
+function renderQuestion(){
+ const x=questions[qi]; answered=false;
+ document.getElementById('qnum').textContent=`Question ${qi+1} / ${questions.length}`;
+ document.getElementById('bar').style.width=((qi)/questions.length*100)+'%';
+ document.getElementById('nextBtn').style.display='none';
+ document.getElementById('quizArea').innerHTML=
+ `<div class="question">${x.q}</div><div class="options">${x.o.map((o,i)=>`<button class="option" onclick="answer(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div><div class="feedback" id="feedback"></div>`;
+}
+function answer(i){
+ if(answered)return; answered=true;
+ const x=questions[qi], opts=document.querySelectorAll('.option');
+ opts[x.a].classList.add('correct');
+ const f=document.getElementById('feedback');
+ if(i===x.a){score++;streak++;f.className='feedback show good';f.innerHTML='💗 Correct! '+x.e;}
+ else{streak=0;opts[i].classList.add('wrong');f.className='feedback show bad';f.innerHTML='🌸 Not quite. '+x.e;}
+ document.getElementById('score').textContent=score;
+ document.getElementById('streak').textContent=streak;
+ if(score>best){best=score;localStorage.setItem('pookieBest',best);document.getElementById('best').textContent=best}
+ document.getElementById('nextBtn').style.display='inline-block';
+}
+function nextQuestion(){
+ qi++;
+ if(qi>=questions.length){
+  document.getElementById('quizArea').innerHTML=`<div class="center"><div class="result">${score}/${questions.length} 🌷</div><h2>Quiz complete!</h2><p>${score>=13?'Nadu absolutely cooked. 💅':score>=9?'Very solid! Keep practicing. 💗':'No panic. The suffixes are just being dramatic. Try again. 🌸'}</p></div>`;
+  document.getElementById('nextBtn').textContent='Restart ↻'; document.getElementById('nextBtn').onclick=()=>{qi=0;score=0;streak=0;document.getElementById('score').textContent=0;document.getElementById('streak').textContent=0;document.getElementById('nextBtn').onclick=nextQuestion;document.getElementById('nextBtn').textContent='Next 💕';renderQuestion()};
+ } else renderQuestion();
+}
+
+const mixed=[
+ ["The new system improved the company's ________.","productivity",["productive","productivity","production","produce"]],
+ ["The person who receives the cheque is the ________.","payee",["payer","payee","payment","paying"]],
+ ["Her ________ made it difficult to finish the work.","laziness",["lazy","laziness","lazier","lazily"]],
+ ["The machine is easily ________.","operable",["operation","operator","operable","operate"]],
+ ["The government plans to ________ the system.","modernise",["modernity","modernise","modernisation","modern"]],
+ ["The factory caused serious ________.","pollution",["pollute","polluted","pollution","polluter"]],
+ ["He is a professional ________.","photographer",["photograph","photographer","photographic","photography"]],
+ ["Their ________ lasted for many years.","friendship",["friendly","friendship","friend","friendless"]],
+ ["The instructions are easy to ________.","read",["readable","reader","read","reading"]],
+ ["The company hired a new ________.","employee",["employer","employee","employment","employable"]]
+];
+let mixedStarted=false;
+function startMixed(){
+ let html='<p class="small">Choose the best answer for each sentence.</p>';
+ mixed.forEach((x,n)=>{html+=`<div class="card" style="box-shadow:none;border:1px solid #f0e5f1"><b>${n+1}. ${x[0]}</b><div class="options">${x[2].map((o,i)=>`<button class="option" data-correct="${o===x[1]}" onclick="mixedAnswer(this,${o===x[1]})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div></div>`});
+ html+='<button class="btn" onclick="gradeMixed()">See Result 🌷</button><div id="mixedResult"></div>';
+ document.getElementById('mixedArea').innerHTML=html; mixedStarted=true;
+}
+function mixedAnswer(btn,correct){
+ const parent=btn.parentElement;
+ parent.querySelectorAll('.option').forEach(b=>b.disabled=true);
+ btn.classList.add(correct?'correct':'wrong');
+ if(!correct) parent.querySelector('[data-correct="true"]').classList.add('correct');
+}
+function gradeMixed(){
+ const answered=document.querySelectorAll('#mixedArea .option.correct');
+ const correct=Array.from(answered).filter(x=>x.dataset.correct==='true').length;
+ document.getElementById('mixedResult').innerHTML=`<div class="center" style="margin-top:18px"><div class="result">${correct}/10</div><p>${correct>=8?'Nadu is ready for battle. 🎀':'A little more practice and this will click. 🌸'}</p></div>`;
+}
+const flash=[
+["-er / -or","person or thing that does an action","teacher, worker, actor"],
+["-ee","person who receives an action","employee, payee, trainee"],
+["-ist","person involved in an activity/belief","pianist, violinist"],
+["-tion / -sion","noun made from a verb","admission, reduction"],
+["-ness","noun showing a quality/state","happiness, weakness"],
+["-able / -ible","can be done","readable, edible"],
+["-ment","often makes a noun","enjoyment, replacement"],
+["-ity","state or quality noun","scarcity, flexibility"],
+["-hood","state/condition","childhood, motherhood"],
+["-ship","relationship/status","friendship, partnership"],
+["-ful","full of","helpful, careful"],
+["-less","without","useless, harmless"],
+["-ify","make/become; forms verbs","purify, beautify"],
+["-ise / -ize","forms verbs","modernise, commercialise"]
+];
+let fi=0;
+function revealFlash(){document.getElementById('flashAnswer').style.display='block';document.getElementById('flashAnswer').innerHTML=`<b>${flash[fi][1]}</b><br><span class="small">${flash[fi][2]}</span>`}
+function nextFlash(){fi=(fi+1)%flash.length;document.getElementById('flashWord').textContent=flash[fi][0];document.getElementById('flashAnswer').style.display='none'}
+renderQuestion();
+</script>
+</body>
+</html>
