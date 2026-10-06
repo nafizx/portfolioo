@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ENG102 Reading Practice</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f1e7;--card:#fffdf8;--ink:#23201b;--mut:#7a7366;--line:#e6dfd0;--acc:#c2410c;--accs:#fde8d9;--ok:#15803d;--oks:#dcf3e2;--bad:#b91c1c;--bads:#fbe0e0}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17150f;--card:#211e16;--ink:#f1ece0;--mut:#a39b88;--line:#37322453;--acc:#fb923c;--accs:#3a2410;--ok:#4ade80;--oks:#12301c;--bad:#f87171;--bads:#3a1515}}
+:root[data-theme="dark"]{--bg:#17150f;--card:#211e16;--ink:#f1ece0;--mut:#a39b88;--line:#373224;--acc:#fb923c;--accs:#3a2410;--ok:#4ade80;--oks:#12301c;--bad:#f87171;--bads:#3a1515}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Georgia,'Times New Roman',serif}
+.w{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:28px;margin:6px 0 2px;letter-spacing:-.5px}
+.sub{color:var(--mut);font:14px system-ui,sans-serif;margin:0 0 18px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;font-family:system-ui,sans-serif}
+.tab{flex:none;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:999px;font-size:14px;cursor:pointer}
+.tab.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.tab small{opacity:.75}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px}
+.badge{display:inline-block;font:700 11px system-ui,sans-serif;letter-spacing:.08em;background:var(--accs);color:var(--acc);padding:3px 9px;border-radius:99px}
+.tip{font:14px system-ui,sans-serif;color:var(--mut);margin:10px 0 0}
+.bar{display:flex;justify-content:space-between;align-items:center;font:14px system-ui,sans-serif;margin-top:14px;gap:8px}
+.timer{font:600 18px ui-monospace,monospace;color:var(--acc)}
+button.b{border:0;background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:10px;font:600 14px system-ui,sans-serif;cursor:pointer}
+button.g{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.psg h2{margin:0 0 10px;font-size:22px}
+.psg p{margin:0 0 12px}
+.q{padding:14px 0;border-top:1px solid var(--line)}
+.q:first-child{border-top:0}
+.qt{font-weight:600;margin-bottom:8px}
+.o{display:block;width:100%;text-align:left;border:1px solid var(--line);background:transparent;color:var(--ink);padding:9px 12px;border-radius:10px;margin-top:6px;font:15px system-ui,sans-serif;cursor:pointer}
+.o.sel{border-color:var(--acc);background:var(--accs)}
+.o.ok{border-color:var(--ok);background:var(--oks)}
+.o.no{border-color:var(--bad);background:var(--bads)}
+.sd{display:flex;gap:8px}.sd .o{width:auto;min-width:90px;text-align:center}
+.res{font:600 22px system-ui,sans-serif;text-align:center;padding:10px}
+.hide{display:none}
+.hc{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px;cursor:pointer;color:var(--ink);font-family:inherit}
+.hc:hover{border-color:var(--acc)}
+.n{flex:none;width:44px;height:44px;border-radius:12px;background:var(--accs);color:var(--acc);display:grid;place-items:center;font:700 20px system-ui,sans-serif}
+.hm{flex:1;display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.ht{font-size:19px;font-weight:700}
+.hs{font:13px system-ui,sans-serif;color:var(--mut)}
+.go{font-size:28px;color:var(--mut)}.done{font:700 14px system-ui,sans-serif;color:var(--ok)}
+</style></head>
+<body><div class="w">
+<h1>Reading Practice</h1>
+<p class="sub">ENG102 · skimming &amp; scanning · pick a set, start the timer, answer, check.</p>
+<div id="app"></div>
+</div>
+<script>
+const SETS=[
+{id:1,type:"SKIMMING",name:"The Lighthouse Keeper",mins:4,tip:"Read title, first sentence of each paragraph, and the last sentence. Then answer.",
+p:["For nearly forty years, Elias Moore lived alone on Blackwater Island, where a narrow lighthouse stood above a stretch of dangerous sea. Ships passing the island rarely saw Elias, but many sailors knew his work. Every evening, whatever the weather, he climbed the 127 steps to the lantern room and checked the great rotating light.",
+"The lighthouse had been built in 1891, long before modern navigation equipment became common. By the time Elias arrived there, the building was old and often difficult to maintain. Salt covered the windows, the iron stairs were beginning to rust, and during winter storms the whole tower seemed to tremble.",
+"Elias, however, disliked complaining. He believed that the lighthouse was less a workplace than a responsibility. One night in November, a violent storm struck the island. The wind became so strong that Elias could barely open the door of the tower. At about midnight, he noticed that the light was moving more slowly than usual.",
+"He immediately climbed upstairs. A metal gear inside the mechanism had cracked.",
+"There was a spare gear in the storage room, but replacing it required removing part of the mechanism. Elias worked for almost two hours while waves crashed against the rocks below. His hands were bleeding from a cut he had received earlier, but he continued working.",
+"At 2:17 a.m., the light began turning normally again.",
+"The following morning, a fishing boat arrived near the island. Its captain later reported that during the storm they had nearly lost their course. The lighthouse, he said, had allowed them to find the correct channel.",
+"When Elias heard this, he simply returned to his workshop. He had never considered himself a hero. In his opinion, he had only done what he was supposed to do."],
+q:[["Which is the best description of the passage?",["The history of the construction of Blackwater Island","How a lighthouse keeper maintained the light during a dangerous storm","Why modern ships no longer need lighthouses","The dangers faced by fishermen near Blackwater Island"],1],
+["Why was the lighthouse difficult to maintain?",["It was located too far from the mainland.","It was rarely used by ships.","It was old and affected by the sea and weather.","Elias did not have enough experience."],2],
+["What happened at about midnight?",["Elias received a message from a fishing boat.","The lighthouse door became impossible to open.","Elias discovered a problem with the light mechanism.","The island lost all electrical power."],2],
+["What does “he had never considered himself a hero” suggest?",["Elias believed his work was ordinary responsibility.","Elias disliked the sailors who praised him.","Elias wanted to leave the lighthouse.","Elias did not understand what had happened."],0],
+["Why is the fishing boat mentioned near the end?",["To show that the lighthouse was still useful.","To explain why Elias became a lighthouse keeper.","To show that the captain knew Elias personally.","To prove that the storm had destroyed the boat."],0],
+["What can we infer about Elias?",["He avoided dangerous situations whenever possible.","He was careless about maintaining the lighthouse.","He took his responsibility seriously.","He wanted recognition from sailors."],2]]},
+{id:4,type:"SCANNING",name:"The Forgotten Photograph",mins:5,tip:"Mark S (Same) or D (Different). One tiny changed detail = D. Hunt for names, numbers, dates.",
+p:["In 1964, photographer Daniel Reed travelled to the coastal town of Harrow Bay to photograph the annual fishing festival. He planned to stay for three days but remained for almost two weeks after becoming interested in the local fishermen.",
+"Reed took approximately 340 photographs during his visit. Most showed boats, markets and fishermen at work. One photograph, however, was different. It showed a young boy standing alone beside an abandoned boat.",
+"Reed labelled the photograph simply “Boy by Boat.”",
+"For many years, the photograph remained in a box in Reed’s studio. In 1998, after his death, his daughter gave the collection to the Harrow Bay Historical Society.",
+"The photograph was displayed for the first time in 2001.",
+"A local historian, Sarah Mills, recognized the boat in the photograph. She discovered that it had belonged to Thomas Avery, a fisherman who had disappeared during a storm in 1959.",
+"Mills then searched old newspapers and found an article about Avery’s disappearance. According to the article, Avery had left behind a wife and a six-year-old son.",
+"The boy in Reed’s photograph was eventually identified as Avery’s son, Michael.",
+"At the time the photograph was taken, Michael was eleven.",
+"In 2005, Michael visited the Historical Society and saw the photograph for the first time. He explained that he had never known anyone had photographed him beside his father’s boat.",
+"He later donated several letters written by his father to the Society.",
+"The photograph is now part of the permanent exhibition at Harrow Bay Museum."],
+q:[["Reed originally intended to remain in Harrow Bay for three days.","S"],["Reed took more than 400 photographs during his visit.","D"],["Most of Reed’s photographs were related to the fishing community.","S"],["The photograph called “Boy by Boat” was immediately displayed to the public.","D"],["Reed’s daughter gave his photographs to a historical organization after his death.","S"],["Sarah Mills identified the boat before she knew who owned it.","S"],["Thomas Avery disappeared while fishing in 1964.","D"],["Avery had one child who was six years old when he disappeared.","S"],["Michael first saw the photograph in 2005.","S"],["Michael gave the museum some of his father’s letters.","S"]]},
+{id:5,type:"SCANNING",name:"The Mountain Rescue",mins:5,tip:"Watch the times: 6:20, 9:40, 10:15, 10:32, 12:05, 2:50, 3:20. Do the maths on gaps.",
+p:["At 6:20 a.m. on Saturday, a group of five climbers began their ascent of Mount Calder. The group had planned to reach the summit by noon and return before sunset.",
+"The weather forecast predicted light snow, but at approximately 9:40 a.m. the temperature dropped sharply and visibility became poor.",
+"At 10:15, one of the climbers, Robert Lane, slipped on an icy section of the mountain. He injured his ankle and could not continue.",
+"The group leader, Helen Morris, contacted the Mountain Rescue Centre using a satellite telephone. The rescue team received the call at 10:32.",
+"Because of the weather, a helicopter could not be used. Instead, six rescue workers began climbing toward the group from the northern side of the mountain.",
+"At 12:05, the rescue workers reached the climbers.",
+"Lane was given pain medication and his ankle was placed in a temporary support. The rescue team then began carrying him down the mountain using a lightweight stretcher.",
+"The descent took nearly three hours.",
+"At 2:50 p.m., the group reached the lower camp, where a medical team was waiting.",
+"Lane was transported to Calder Hospital at 3:20 p.m. Doctors confirmed that his ankle was badly sprained but not broken.",
+"The other four climbers returned to the town that evening.",
+"The Mountain Rescue Centre later reminded climbers that weather conditions could change rapidly, even when the original forecast appeared safe."],
+q:[["The climbers started their journey before sunrise.","S"],["The group expected to reach the summit around midday.","S"],["Heavy snow was predicted from the beginning.","D"],["Robert Lane was injured after falling on ice.","S"],["The rescue centre received the emergency call less than thirty minutes after the accident.","S"],["The rescue team travelled to the climbers by helicopter.","D"],["Six rescue workers went toward the climbers.","S"],["Lane’s ankle was placed in a temporary support before he was carried down.","S"],["The descent from the mountain took more than four hours.","D"],["Doctors discovered that Lane had broken his ankle.","D"]]}
+,
+{id:2,type:"SKIMMING",name:"The Underground Library",mins:4,tip:"Main idea first. Notice who, where, when, and how the historians’ view changed.",
+p:["When workers began digging beneath an old railway station in northern England, they expected to find nothing more interesting than pipes and electrical cables. Instead, they discovered a narrow brick staircase leading to a room that had been sealed for more than seventy years.",
+"The room contained shelves, wooden tables and several hundred books. Most were covered in dust, but surprisingly few had been damaged. At first, nobody knew why the room existed.",
+"Local historians eventually discovered that the underground library had been created during the Second World War. The railway station above it was extremely busy, and thousands of people passed through it every day. During air raids, passengers were sometimes forced to remain underground for hours.",
+"A local librarian named Margaret Bell had suggested placing books there so that people could read while waiting for the danger to pass. The idea had initially been criticized as unnecessary. Some officials argued that people would be too frightened to read during an air raid.",
+"Bell disagreed.",
+"According to her diary, reading could give people “something ordinary to hold on to when everything outside had become frightening.”",
+"The library soon became popular. Newspapers, novels, children’s books and magazines were placed on the shelves. Volunteers worked at night to repair damaged books and organize the collection.",
+"After the war, the railway station was modernized. The underground room was gradually forgotten. The entrance was eventually covered during construction work, leaving the library untouched.",
+"When the room was rediscovered decades later, historians found something unexpected among the books: hundreds of handwritten notes from readers.",
+"Many were simple comments about the books they had borrowed. Others described the air raids, their families, or their hopes for the future.",
+"The discovery changed the historians’ view of the library. It was no longer simply a collection of old books. It had become a record of how ordinary people had tried to maintain a sense of normal life during an extraordinary period."],
+q:[["What was unexpected about the discovery?",["Workers found an operating railway line underground.","Workers found a library that had been hidden for decades.","Workers discovered that the station had never been used.","Workers found thousands of military documents."],1],
+["Why was the library originally created?",["To train librarians during the war","To store books that could not be kept above ground","To give people something to do during air raids","To provide books for railway workers only"],2],
+["What did some officials initially believe?",["People would not be interested in reading during air raids.","The library would be too expensive to operate.","The books would be destroyed by railway workers.","The room was unsafe for volunteers."],0],
+["What does “something ordinary to hold on to” mean in context?",["A physical object that people could carry","Something familiar that could provide comfort","A book that was difficult to understand","A method of escaping the underground room"],1],
+["Why were the handwritten notes important?",["They showed which books were the most expensive.","They proved that Margaret Bell had written the books.","They provided information about people’s experiences during the war.","They explained how the library had been built."],2],
+["What is the main point of the final paragraph?",["The library was mainly important because of its value as a historical record.","The historians planned to sell the books.","The library was more successful after the war.","Most of the handwritten notes were about railway travel."],0]]},
+{id:3,type:"SKIMMING",name:"The Last Passenger",mins:4,tip:"Follow the sequence of events: stop → detour → car → rescue → ending.",
+p:["The bus left the city at 10:45 p.m., carrying only seven passengers. It was an ordinary route, but the driver, Mr Harris, had been warned that the road ahead was partially flooded.",
+"For most of the journey nothing unusual happened. The passengers talked quietly or looked at their phones. Near the village of Millbrook, however, the bus stopped suddenly.",
+"A fallen tree blocked the road.",
+"Mr Harris switched off the engine and walked outside. The rain had become heavier, and water was running across the road. He returned to the bus and explained that they would have to wait until the tree could be moved.",
+"One passenger, an elderly man named Peter, asked whether there was another route.",
+"“There is,” said Harris, “but the bridge is usually closed at night.”",
+"Peter looked out of the window.",
+"“I think it may be worth trying.”",
+"The other passengers were less enthusiastic. Nevertheless, after twenty minutes, Harris decided to take the alternative route. The bus turned around and travelled toward the old bridge.",
+"As they approached it, Harris noticed a small car parked beside the road. Its headlights were off. He stopped the bus and walked over.",
+"A young woman was sitting inside. She had driven into a shallow ditch and could not move the car.",
+"Harris asked whether she was injured. She shook her head but said her phone had no signal.",
+"Harris used the bus radio to contact emergency services.",
+"While waiting, Peter got off the bus and helped Harris place warning signs around the car. The other passengers stayed inside because the rain was now extremely heavy.",
+"Twenty minutes later, a rescue vehicle arrived.",
+"The young woman was taken to safety, and the bus continued across the bridge.",
+"When it finally reached Millbrook, the passengers discovered that the main road had been closed completely because the floodwater had risen.",
+"Peter smiled at Harris. “Perhaps the bridge wasn’t such a bad idea.”",
+"Harris laughed. “Perhaps not.”"],
+q:[["Why did the bus stop?",["The driver became ill.","The road was blocked.","The passengers wanted to leave.","The bus ran out of fuel."],1],
+["Why was the alternative route unusual?",["It was longer than the normal route.","It passed through another city.","It involved a bridge normally closed at night.","It was being repaired."],2],
+["Why did Harris stop near the bridge?",["He saw a vehicle in difficulty.","He wanted to check the bridge.","He received a message from the police.","Peter asked him to stop."],0],
+["What did Peter do?",["He contacted the police himself.","He drove the damaged car away.","He helped put warning signs around the car.","He stayed on the bus throughout the incident."],2],
+["What does the ending suggest?",["The passengers regretted taking the alternative route.","The alternative route turned out to be useful.","The bridge was unsafe after all.","Harris had made a serious mistake."],1],
+["Which statement is TRUE?",["The main road remained open throughout the night.","The young woman was seriously injured.","The bus passengers refused to help.","The alternative route helped the bus avoid the flooded road."],3]]},
+{id:6,type:"SCANNING + INFERENCE",name:"The Experimental Train",mins:7,tip:"Q1–10: S or D. Q11–13: choose the best answer. Track each test’s speed and date.",
+p:["In March 1978, the National Railway Research Centre began testing an experimental electric train called Project Arrow.",
+"The train was designed to travel at speeds of up to 220 kilometres per hour, considerably faster than most passenger trains operating at the time.",
+"The first test took place on 14 March between Eastford and Milton. Only engineers and railway officials were allowed on board.",
+"During the first test, the train reached 183 km/h. The engineers considered this a success because the test had been intended mainly to examine the braking system.",
+"A second test was carried out six days later.",
+"This time, Project Arrow reached 207 km/h. However, the train developed excessive vibration at high speed, and the engineers decided not to increase the speed further.",
+"During April, engineers modified the suspension system.",
+"A third test took place on 3 May. The train reached 218 km/h without experiencing the vibration seen during the previous test.",
+"The final test was conducted on 18 May. Project Arrow reached its target speed of 220 km/h.",
+"Despite the successful tests, the project was cancelled later that year. The railway authority concluded that upgrading existing tracks to safely support such high speeds would be too expensive.",
+"The experimental train was eventually placed in a railway museum.",
+"It remained there until 2008, when it was moved to a technical university for restoration."],
+q:[["Project Arrow was developed by a railway research organization.","S"],["The train was designed to reach a maximum speed of 220 kilometres per hour.","S"],["Ordinary passengers were allowed to travel on the first test.","D"],["During the first test, the train reached its intended maximum speed.","D"],["The second test showed that the train had a vibration problem.","S"],["Engineers changed the suspension system after the second test.","S"],["Project Arrow reached 218 km/h during its third test.","S"],["The train exceeded its target speed during the final test.","D"],["The project was cancelled because the train could not reach the required speed.","D"],["The train was eventually preserved rather than destroyed.","S"],
+["Why did the engineers stop increasing the speed during the second test?",["The engine became too hot.","The train began vibrating excessively.","The railway track was damaged.","The weather became dangerous."],1],
+["What was the main reason the project was eventually cancelled?",["The train was too slow.","Engineers could not solve the vibration problem.","Improving the railway infrastructure would cost too much.","The train was considered unsafe at all speeds."],2],
+["What can we infer from the fact that the train was moved to a technical university in 2008?",["It was probably considered useful for education or research.","It was returned to normal passenger service.","The railway authority planned to restart the project.","It was damaged beyond repair."],0]]}
+];
+SETS.sort((a,b)=>a.id-b.id);
+let cur=null,st={},t0=null,iv=null;
+const $=s=>document.querySelector(s);
+function tabs(){}
+function pick(i){clearInterval(iv);cur=i;render();window.scrollTo(0,0)}
+function home(){
+ $('#app').innerHTML=SETS.map((d,i)=>{const s=st[i];const stat=s&&s.done?`<span class="done">✓ ${s.score}/${d.q.length}</span>`:'<span class="go">›</span>';
+ return `<button class="hc" onclick="pick(${i})"><span class="n">${d.id}</span><span class="hm"><span class="badge">${d.type}</span><span class="ht">${d.name}</span><span class="hs">${d.q.length} questions · ${d.mins} min</span></span>${stat}</button>`}).join('')}
+function S_(){return st[cur]||(st[cur]={a:{},done:false,sec:0})}
+function fmt(n){return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')}
+function startT(){clearInterval(iv);const s=S_();if(s.done)return;iv=setInterval(()=>{s.sec++;const e=$('#tm');if(e)e.textContent=fmt(s.sec)},1000)}
+function ans(qi,v){const s=S_();if(s.done)return;s.a[qi]=v;render(true)}
+function check(){const s=S_();s.done=true;clearInterval(iv);render()}
+function reset(){st[cur]=null;clearInterval(iv);render()}
+function render(keep){
+ if(cur===null)return home();
+ const d=SETS[cur],s=S_(),y=window.scrollY;
+ let score=0;
+ const qs=d.q.map((q,i)=>{
+  const sd=typeof q[1]=='string',opts=sd?['S','D']:q[1],right=sd?(q[1]=='S'?0:1):q[2];
+  if(s.a[i]===right)score++;
+  const os=opts.map((o,j)=>{let c='o';if(s.done){if(j==right)c+=' ok';else if(s.a[i]===j)c+=' no'}else if(s.a[i]===j)c+=' sel';
+   return `<button class="${c}" onclick="ans(${i},${j})">${sd?o:String.fromCharCode(97+j)+') '+o}</button>`}).join('');
+  return `<div class="q"><div class="qt">${i+1}. ${sd?q[0]:q[0]}</div><div class="${sd?'sd':''}">${os}</div></div>`}).join('');
+ s.score=score;const answered=Object.keys(s.a).length;
+ $('#app').innerHTML=`<button class="b g" onclick="pick(null)">← All practices</button><div class="card"><span class="badge">${d.type} · PRACTICE ${d.id}</span><p class="tip">💡 ${d.tip}</p>
+ <div class="bar"><span>Target: ${d.mins} min</span><span class="timer" id="tm">${fmt(s.sec)}</span><button class="b" onclick="startT()" ${s.done?'disabled':''}>Start timer</button></div></div>
+ <div class="card psg"><h2>${d.name}</h2>${d.p.map(x=>`<p>${x}</p>`).join('')}</div>
+ <div class="card">${qs}
+ ${s.done?`<div class="res">Score: ${score} / ${d.q.length} · ${fmt(s.sec)}</div>`:`<div class="bar"><span>${answered}/${d.q.length} answered</span><button class="b" onclick="check()">Check answers</button></div>`}
+ <div class="bar" style="justify-content:center"><button class="b g" onclick="reset()">Try again</button></div></div>`;
+ if(keep)window.scrollTo(0,y);
+}
+render();
+</script></body></html>
