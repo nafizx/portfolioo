@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Context Clues Flashcards</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#eef2f0;--ink:#1d2b2a;--front:#fff;--back:#1f5c52;--backink:#f2fbf8;--mut:#5c6f6c;--acc:#c8472b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101a19;--ink:#e6f0ee;--front:#1a2a28;--back:#2f8a7a;--backink:#06201b;--mut:#8aa19d}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif;padding:16px}
+h1{font-size:1.5rem;margin:8px 0 2px}
+.sub{color:var(--mut);margin:0 0 14px;font-size:.95rem}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.bar button{font:inherit;font-size:.85rem;border:1.5px solid var(--ink);background:none;color:var(--ink);border-radius:20px;padding:6px 12px}
+.bar button.on{background:var(--ink);color:var(--bg)}
+h2{font-size:1rem;margin:22px 0 10px;color:var(--mut);font-weight:normal}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.card{perspective:800px;height:270px;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer}
+.in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.card.flip .in{transform:rotateY(180deg)}
+.f,.b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;padding:10px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:auto}
+.f{background:var(--front);font-size:1.25rem;font-weight:bold;border:1.5px solid var(--ink)}
+.b{background:var(--back);color:var(--backink);transform:rotateY(180deg);font-size:.88rem;line-height:1.35;justify-content:flex-start;align-items:flex-start;text-align:left}.b p{margin:0 0 6px}.b mark{background:#ffe27a;color:#222;padding:0 2px;border-radius:3px}
+.b b{display:block;font-size:1rem;margin-bottom:5px}
+.b i{display:block;margin-top:5px;opacity:.9}
+.card:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.in{transition:none}}
+</style></head><body>
+<h1>Context Clues Flashcards</h1>
+<p class="sub">Tap a word to see the sentence, definition and clue.</p>
+<div class="bar" id="bar"></div>
+<div id="app"></div>
+<script>
+const S=[
+["Set 1",[
+["universal","by or for everyone","\"universally acknowledged truth\" about all popular girls"],
+["extraordinary","far beyond ordinary; remarkable","contrasts with Kevin's basic layup"],
+["establish","to set up firmly; found","peace lasted \"for years now\""],
+["scrupulous","extremely careful and exact","mother arranged everything \"in perfect alignment\""],
+["consent","to give permission; agree","asked \"for permission\", then she consented"],
+["vexed","annoyed; irritated","brother broke his Xbox and Jose \"let Emilio know it\""],
+["tact","careful, kind way of handling people","\"consideration when choosing her words\", Bertha not hurt"],
+["emphatic","forceful and strong","argued \"with such great passion\""],
+["amends","something done to make up for a wrong","he broke her heart and must win her back"],
+["conjecture","to guess without proof","\"so few clues\", all he could do was guess"],
+["ascertain","to find out for sure","\"beyond a shadow of a doubt\""]]],
+["Set 2",[
+["disposition","a person's natural mood or temperament","\"calm and mellow\" vs John's wild behavior"],
+["amiable","friendly and pleasant","best smile, laughs, attracts attention"],
+["scarce","hard to find; in short supply","lioness had to \"roam far\" for food"],
+["fastidious","very picky; hard to please","pleased with A's, mom \"shook her head\""],
+["conceited","too proud of oneself; vain","child posing in every reflection"],
+["candor","honesty; speaking frankly","told the truth though it hurt; he \"appreciated\" it"],
+["ostentatious","showy; flashy to impress","\"big, puffy, golden\" gown vs simple white dress"],
+["endeavor","a serious effort or project","\"see this through\"; becoming an artist"],
+["provoke","to push someone into reacting; stir up anger","insulted my family and \"I lost control\""],
+["engross","to hold all of someone's attention","didn't even respond to cake offer"],
+["deficient","lacking; not good enough","\"couldn't catch or throw\" the ball"],
+["benevolence","kindness; generosity","nuns \"sacrificed\" salaries to feed children"]]],
+["Set 3",[
+["intrepid","fearless; brave","\"might think she'd be afraid\" but ran up to it"],
+["servile","too eager to serve; submissive","\"always volunteering\" to help the teacher"],
+["derision","mockery; ridicule","called him \"Potty-Pants Clyde\" so he left"],
+["implore","to beg earnestly","asking board to act \"before another tragedy\""],
+["incline","to be likely or willing to do something","needs money so \"inclined to accept\" the challenge"],
+["incessant","nonstop; never ending","chatting \"all around him\" kept him from focusing"],
+["felicity","great happiness","job offer, \"barely find the words\""],
+["discreet","careful and quiet; not drawing attention","\"considerate\" way to eat candy in the library"],
+["inconsequential","not important; doesn't matter","team won't make playoffs"],
+["dilapidation","falling apart from neglect","foreclosed houses, \"no homeowners to maintain\""],
+["prudence","careful good judgment","\"full of dangers\" so be careful"],
+["boisterous","loud and rowdy","gym \"matches their moods\" better than library"]]],
+["Set 4",[
+["lamentable","regrettable; sad","\"time to move on with your life\""],
+["adorn","to decorate","streamers and balloons on walls"],
+["ambuscade","a hidden surprise attack; ambush","\"ducked in tall grass\", waited for next group"],
+["uninhabitable","not fit to live in","flood and toxic mold in the house"],
+["opaque","can't be seen through","couldn't see \"even the slightest glimpse\""],
+["parsimonious","extremely stingy with money","copies movies, old bread \"even though he has a lot of money\""],
+["insolence","rude, disrespectful behavior","talked back, used principal's first name"],
+["rebuke","to scold sharply","players cheated, coach spoke \"harshly\""],
+["eminence","fame; high standing","big companies wanted him; \"well known\""],
+["obsequies","(worksheet means obsequious) overly eager to please, fawning","reminded teacher of homework, \"unpopular\""],
+["aversion","strong dislike","avoids \"crowded places\", gives tickets away"],
+["pertinent","relevant to the topic","questions \"to the matter at hand\""]]],
+["Set 5",[
+["torrid","extremely hot","man sweating in the desert"],
+["partake","to take part in","didn't want to join bullying"],
+["vestibule","small entrance hall","after the doors, before the reception area"],
+["meritorious","deserving praise","four medals for conduct in battle"],
+["ecstatic","overjoyed","fans hear reunion tour news"],
+["contempt","scorn; looking down on someone","won't look at me, scowls"],
+["askance","with suspicion or doubt","\"clever\" farm boy, odd wallet inspector"],
+["havoc","chaos and destruction","fire-breathing monster in Tokyo"],
+["terrestrial","of the Earth; land-based","\"unlike\" anything known on Earth"],
+["actuate","to move to action; motivate","her feelings made her behave that way"],
+["subside","to calm down; die down","waited outside until rage went away"],
+["predominate","to be the most common or main","football is the main topic of talk"]]],
+["Set 6",[
+["devoid","completely without","detention room lacked \"warmth and cheer\""],
+["firmament","the sky; heavens","\"gazed up\" and thanked the heavens"],
+["indiscriminate","choosing without care","\"carefully consider\" is the opposite"],
+["laden","heavily loaded","hard to climb with textbook-filled bag"],
+["spontaneous","sudden; unplanned","urge \"passed as suddenly as it came\""],
+["derive","to come from; originate","sword's name comes from the mountain"],
+["lofty","very high; tall","coconut tree, afraid of heights"],
+["arduous","very hard; tiring","needed to \"catch his breath\" first"],
+["exuberant","full of lively energy","\"fast paced\" holiday market she loved"],
+["imperious","bossy; commanding","\"always trying to tell me what to do\""],
+["decline","to say no politely","disappointed, now who will sit in the tank?"],
+["brazen","boldly shameless","feet on antique piano, shoes on"]]],
+["Set 7",[
+["entitle","to give a right to something","acts like family name gives him \"a piece of everything\""],
+["usurp","to take power by force or unfairly","\"true king\", uncle took the throne"],
+["candid","honest and frank","said one thing to coworkers, real opinion differs"],
+["magnanimous","generous and forgiving","let the thief go: \"Everybody has to eat\""],
+["acquiesce","to give in; agree reluctantly","didn't want to go but \"finally agreed\""],
+["grievance","a complaint about unfair treatment","long hours, low pay, danger"],
+["seize","to take by force or authority","police officer took fireworks from kids"],
+["deprive","to take something away","principal canceled prom for everyone"],
+["ascertain","to find out for sure","\"check the website\" to know the truth"],
+["compulsory","required; must do","\"chose to skip class\" so he has to participate"],
+["enumerate","to list one by one","gave \"a list long enough\" to quiet Bobby"],
+["prohibitive","so expensive it stops you","wanted it since November, can't afford it"]]]
+];
+const SEN=[[
+`Jim wanted to ask Janet to the dance, but he felt it a {universally} acknowledged truth that popular girls like her didn't go with unpopular guys like him.`,
+`Kevin may know how to layup a basketball, but my jump shot is {extraordinary}.`,
+`Even though peace between the two formerly warring nations had been {established} for years now, the soldier still woke cold from dreams of battle.`,
+`I wanted to just set the table and be done with it, but my mother {scrupulously} arranged each napkin, dish, and utensil until they were in perfect alignment.`,
+`Jake asked his mother for permission to go to his friend Rodney's dance party, stating that his grades had improved, and he was quite pleased when she {consented}.`,
+`When Jose found out that his little brother Emilio carelessly broke Jose's Xbox disc tray, Jose was {vexed} and sure let Emilio know it.`,
+`Jane could have easily offended Bertha when she informed her that the dress did not fit her well, but Jane used {tact} and consideration when choosing her words, so Bertha understood without being hurt.`,
+`Her parents really wanted her to attend the local university, but Shaniqua argued her case so {emphatically} and with such great passion, that her parents gave Shaniqua their consent.`,
+`After Brian broke Darcy's heart this last time, he will have to make some serious {amends} if he ever wants to win her back.`,
+`Stanley tried to determine the meaning of the vocabulary word, but there were so few clues in the sentence all he could do was hopelessly {conjecture} as to what the word might mean.`,
+`The clues in the sentence were so helpful, Stanley was able to {ascertain} the meaning of the word beyond a shadow of a doubt.`],[
+`Unlike his sister Cattie, who had a very calm and mellow {disposition}, John jumped on sofas and ran through the house like an animal kingdom.`,
+`If you go to the party wearing your best smile, laugh good naturedly, and try your dance steps out (even if you aren't the best dancer), you will attract attention with your {amiable} disposition.`,
+`Due to the {scarcity} of food in her territory, the mother lioness had to roam far from safe ground to find a meal for her child.`,
+`When John saw his report card, he was excited because he had all As and an A- in Biology; but when his {fastidious} mother saw his report card, she shook her head in disappointment.`,
+`When Jana noticed her daughter Kylie staring at herself and posing in every reflection that they passed, Jana worried that Kylie was growing a bit {conceited}.`,
+`After weeks of avoiding him, Annie finally found the courage to tell David that she wasn't interested in him; and even though David was heart broken, he appreciated her {candor}.`,
+`Amy wanted to wear the simple white dress to the dance but her friend Emilia kept pushing her to buy this big, puffy, golden ballroom gown as {ostentatious} as it was expensive.`,
+`John may have been excited about becoming an artist, but his mother was waiting to see if he'd see this {endeavor} through before buying him the expensive paint kit.`,
+`I didn't want to fight him, but he {provoked} me by insulting my family and I lost control.`,
+`The young child was so {engrossed} by the flashing lights on the toy train that when his mother asked him if he wanted a piece of chocolate cake, he didn't even respond.`,
+`Zach wanted to play football with the other kids but, with his horrible {deficiencies} in coordination, he couldn't catch or throw the ball.`,
+`The children in the orphanage might have starved had it not been for the {benevolence} of the nuns, who sacrificed their own small salaries to provide food for the children.`],[
+`One might think that the child would be afraid of such a large animal, but the {intrepid} young girl ran up to the beast and began scratching it behind the ears.`,
+`Janet disliked the {servile} students, the ones who were always volunteering to help the teacher grade papers or clean the board.`,
+`Clyde could no longer tolerate the {derision} of his classmates, who would refer to him by no other name than Potty-Pants Clyde, so he transferred schools.`,
+`I {implore} the school board members and administrators to take a closer look at cyber-bullying as it is practiced in our community, and take action against it before another senseless tragedy occurs.`,
+`He offered me twenty dollars to eat a dragonfly. I need money so badly that I am {inclined} to accept his challenge.`,
+`John could not focus on the assignment with the {incessant} chatting that was occurring all around him.`,
+`When John received the job offer, he was so overcome with {felicity} that he could barely find the words to accept it.`,
+`The librarian won't take away your candy, so long as you are considerate and consume it in a {discreet} manner.`,
+`Since our team will not make the playoffs this year, the results of the remaining games are pretty much {inconsequential}.`,
+`Several houses on Larry's block had been foreclosed years ago. With no concerned homeowners to maintain these properties, these houses have fallen into various states of {dilapidation}.`,
+`This political landscape is full of dangers so a good politician must exercise {prudence} in their policymaking.`,
+`The teacher was afraid to take the {boisterous} students into the library. She knew that the gymnasium was a setting that would better match their moods.`],[
+`Lia, it is {lamentable} that you and Derrick separated, but it has almost been a year. Don't you think that it's about time to move on with your life?`,
+`To prepare the cafeteria for the big dance, the planning committee {adorned} the walls with colorful streamers and balloons.`,
+`Ducked down in the tall grass, the warriors waited patiently on the hillside for the next group unfortunate enough to walk through their {ambuscade}.`,
+`The flood caused toxic molds to grow on the walls of our old house and now it is {uninhabitable}.`,
+`Brian attempted to see who was riding inside of the limousine, but the {opaque} window tinting prevented him from getting even the slightest glimpse.`,
+`Due to his {parsimonious} nature, Brian enjoys borrowing movies from the library and copying them, buying day old bread from the bakery, and recording music from the radio even though he has a lot of money.`,
+`Katie talked back to the principal and called him by his first name so he sent her to the office for her {insolence}.`,
+`After the players got caught cheating on the exam, the coach {rebuked} them harshly.`,
+`Large companies and wealthy clients wanted Donzo to take their pictures, as Donzo was well known for his {eminence} in photography.`,
+`"Teacher, you forgot to assign homework," said James, expressing the {obsequies} nature that made him unpopular.`,
+`John gave me two tickets to the basketball game, but I have an {aversion} to going to crowded places like sports arenas, so would you like to have them?`,
+`The principal concluded his speech, "Now that I have introduced the new program, I will answer a few questions, so long as they are {pertinent} to the matter at hand."`],[
+`The bearded man sweated as he crawled through the {torrid} desert.`,
+`Joshua did not want to {partake} in bullying the new kid because he had once been a new student himself and he remembered how hard it was to adjust.`,
+`Jon pulled open the doors to the large building and stood in the {vestibule} for a moment to catch his breath before entering the reception area.`,
+`The soldier was awarded four medals for his {meritorious} conduct on the battlefield.`,
+`Have you heard? Super star country western group The Mountain Boys are getting back together for a reunion tour. Fans all over the world will be {ecstatic} to hear this news.`,
+`Ever since she found out that I stole that fudge from those blind people, my teacher has treated me with {contempt}. Usually she won't even look at me and when she does she scowls.`,
+`As he got off the train to the city, the clever farm boy looked {askance} at the man with the cardboard sign claiming to be a wallet inspector.`,
+`The giant fire-breathing monster was unleashed to cause {havoc} in the city of Tokyo.`,
+`Scientists claim that the plants and animals on this recently discovered planet are unlike any of the {terrestrial} variety which we have known our whole lives.`,
+`My daughter would never have behaved in this way had she not been {actuated} by her feelings for that no good Larry.`,
+`After his outburst, Raphael decided to stay outside of the classroom until his feelings of rage {subsided}.`,
+`Ever since the season started again, football has been the {predominant} topic of conversation amongst the boys in the lunchroom.`],[
+`Ronald hated the detention room because it was absolutely {devoid} of warmth and cheer.`,
+`After barely surviving a deadly encounter, Kyle gazed up at the {firmament} and thanked the heavens that he survived.`,
+`You must not be {indiscriminate} when you are shopping for shoes. Carefully consider which shoes will be best for you before making your purchase.`,
+`Julia had a difficult time trudging up the snowy hill with her textbook {laden} book bag.`,
+`Brenda was trying to study for her chemistry final when she was overcome by the {spontaneous} urge to go on a bike ride, but the urge passed as suddenly as it came.`,
+`This magical sword is called Everest-Tooth because it was forged on the mountain from which its name is {derived}.`,
+`He wanted to climb the {lofty} coconut tree to retrieve the nourishing fruit, but he was too afraid of heights.`,
+`John tried to catch his breath for a minute before he attempted the {arduous} climb up the peak of the mountain.`,
+`Janice loved the fast paced, {exuberant} feeling of the market during the holiday season.`,
+`Though Kathy and I are both technically store clerks, Kathy is always trying to tell me what to do because of her {imperious} nature.`,
+`I am disappointed that Kyle {declined} our offer to sit in the dunk tank. Now who will dress up like a clown and sit still while people throw balls at him or her?`,
+`Ms. Witherspoon was shocked that the snickering bill collector was {brazen} enough to rest his feet on the antique grand piano, with his shoes on of all things, while she ran to get her checkbook.`],[
+`I wouldn't mind sharing with Patrick if he didn't act like being a part of the Witherspoon family {entitled} him to a piece of everything on campus.`,
+`Though Joseph was the true king, his uncle {usurped} the throne and was now ruling the land quite cruelly.`,
+`When around his coworkers, Alan said that he agreed with the boss's new policy, but his {candid} opinion was that it would drive away customers.`,
+`The {magnanimous} judge released the young offender who had been caught stealing bread by saying, "Everybody has to eat," and slamming down his gavel.`,
+`Angela did not want to go to the party. She wanted to study for the exam, but her sister nagged her so much that Angela finally {acquiesced} and agreed to go.`,
+`The workers wrote an anonymous letter to their boss in which they expressed their {grievances}: long working hours, low pay, and dangerous working conditions.`,
+`The police officer {seized} the firework from the underage children.`,
+`The students were angry that the principal {deprived} everyone of prom because of the actions of a few individuals.`,
+`Kevin told me that there is no homework. Katie told me that we are supposed to study for a quiz. I'm going to check the teacher's website to {ascertain} the truth.`,
+`Bruce did not want to help clean up the trash by the river, but the principal told him that since he chose to skip classes on Friday, his participation in the event would be {compulsory}.`,
+`When Bobby asked Kelly to give him one reason why they shouldn't go, Kelly {enumerated} a list long enough to quiet Bobby.`,
+`I've wanted to purchase the new Game Box since it came out last November, but up until now the price has been {prohibitive}.`]];
+const app=document.getElementById('app'),bar=document.getElementById('bar');
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function render(only){
+app.innerHTML='';
+S.forEach(([n,w],i)=>{if(only!==null&&only!==i)return;
+const h=document.createElement('h2');h.textContent=n+' ('+w.length+' words)';app.appendChild(h);
+const g=document.createElement('div');g.className='grid';
+w.forEach(([a,d,c],j)=>{const s=esc(SEN[i][j]).replace(/\{([^}]+)\}/,'<mark>$1</mark>');const b=document.createElement('button');b.className='card';b.setAttribute('aria-label',a+', tap to flip');
+b.innerHTML='<div class="in"><div class="f">'+esc(a)+'</div><div class="b"><b>'+esc(a)+'</b><p>'+s+'</p><p><strong>Definition:</strong> '+esc(d)+'</p><i>Clue: '+esc(c)+'</i></div></div>';
+b.onclick=()=>b.classList.toggle('flip');g.appendChild(b)});
+app.appendChild(g)})}
+[['All',null],...S.map((s,i)=>[s[0],i])].forEach(([t,v],k)=>{const b=document.createElement('button');b.textContent=t;
+if(k===0)b.className='on';b.onclick=()=>{[...bar.children].forEach(x=>x.className='');b.className='on';render(v)};bar.appendChild(b)});
+render(null);
+</script></body></html>
